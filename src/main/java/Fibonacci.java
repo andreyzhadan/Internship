@@ -32,9 +32,9 @@ public class Fibonacci {
             System.out.print(fibonacci(i) + " ");
         System.out.println("\nNon cacheMap version takes " + (System.currentTimeMillis() - t0) + " ms");
 
-        long t2 = System.currentTimeMillis();
+        long t1 = System.currentTimeMillis();
         for (int i = 0; i < 40; i++)
             System.out.print(fibonacciCached(i) + " ");
-        System.out.println("\nCacheMap version takes " + (System.currentTimeMillis() - t2) + " ms");
+        System.out.println("\nCacheMap version takes " + (System.currentTimeMillis() - t1) + " ms");
     }
 }
