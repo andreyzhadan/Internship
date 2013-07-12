@@ -16,13 +16,13 @@ import java.util.regex.Pattern;
  */
 public class Crawler {
 
-    private Stack<String> links = new Stack<String>();
-    private Set<String> allLinks = new HashSet<String>();
+    private Map<String, Integer> links;
+    private Set<String> allLinks;
 
     public Crawler() {
-        links = new Stack<String>();
+        links = new LinkedHashMap<String, Integer>();
         allLinks = new HashSet<String>();
-        links.add(Constants.BASE_URL);
+        links.put(Constants.BASE_URL, Constants.LEVEL);
         allLinks.add(Constants.BASE_URL);
     }
 
@@ -33,6 +33,8 @@ public class Crawler {
     }
 
     public void crawl(String urlString) {
+
+        int currLevel = links.remove(urlString) - 1;
         //let's check url string correctness
 
         if (!checkCorrectness(urlString)) {
@@ -64,10 +66,9 @@ public class Crawler {
             List<String> urls = extractUrls(builder.toString());
             for (String elem : urls) {
                 System.out.println(elem);
-                if (elem.contains(Constants.DOMAIN) && !allLinks.contains(elem) && checkCorrectness(elem)) {
-                    links.push(elem);
+                if (elem.contains(Constants.DOMAIN) && !allLinks.contains(elem) && checkCorrectness(elem) && currLevel != 0) {
+                    links.put(elem, currLevel);
                     allLinks.add(elem);
-                    System.out.print(" this link is in the same DOMAIN");
                 }
             }
         } catch (IOException ex) {
@@ -100,7 +101,7 @@ public class Crawler {
 
     public void search() {
         while (!links.isEmpty()) {
-            crawl(links.pop());
+            crawl(links.keySet().iterator().next());
         }
 
     }
