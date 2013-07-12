@@ -17,13 +17,13 @@ import java.util.regex.Pattern;
 public class Crawler {
 
     private Map<String, Integer> links;
-    private Set<String> allLinks;
+    private Set<String> sameDomainLinks;
 
     public Crawler() {
         links = new LinkedHashMap<String, Integer>();
-        allLinks = new HashSet<String>();
+        sameDomainLinks = new HashSet<String>();
         links.put(Constants.BASE_URL, Constants.LEVEL);
-        allLinks.add(Constants.BASE_URL);
+        sameDomainLinks.add(Constants.BASE_URL);
     }
 
     public boolean checkCorrectness(String urlString) {
@@ -32,14 +32,14 @@ public class Crawler {
         return urlValidator.isValid(urlString);
     }
 
-    public void crawl(String urlString) {
-
+    public Set<String> crawl(String urlString) {
+        Set<String> uniqueUrls = new HashSet<String>();
         int currLevel = links.remove(urlString) - 1;
         //let's check url string correctness
 
         if (!checkCorrectness(urlString)) {
             System.out.println("URL is incorrect");
-            return;
+            return null;
         }
         try {
             URL url = new URL(urlString);
@@ -65,15 +65,17 @@ public class Crawler {
             //let's use some util lib to find urls
             List<String> urls = extractUrls(builder.toString());
             for (String elem : urls) {
-                System.out.println(elem);
-                if (elem.contains(Constants.DOMAIN) && !allLinks.contains(elem) && checkCorrectness(elem) && currLevel != 0) {
+                uniqueUrls.add(elem);
+                //System.out.println(elem);
+                if (elem.contains(Constants.DOMAIN) && !sameDomainLinks.contains(elem) && checkCorrectness(elem) && currLevel != 0) {
                     links.put(elem, currLevel);
-                    allLinks.add(elem);
+                    sameDomainLinks.add(elem);
                 }
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        return uniqueUrls;
 
     }
 
