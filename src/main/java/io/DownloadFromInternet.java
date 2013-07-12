@@ -12,6 +12,8 @@ import java.util.Stack;
 /**
  * Created by azhadan on 7/11/13.
  */
+
+// OOP style
 public class DownloadFromInternet {
     private static final String DOMAIN = "http://www.dataved.ru/2010/05";
     private static Set<String> allLinks = new HashSet<String>();
@@ -25,7 +27,10 @@ public class DownloadFromInternet {
             crawl(links.pop());
     }
 
-    public static void crawl(String urlString) throws IOException {
+    public static void crawl(String urlString) throws IOException /*try and catch*/ {
+
+        //let's check url string correctness
+
         URL url = new URL(urlString);
         InputStream in = url.openStream();
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("output/" +
@@ -42,6 +47,9 @@ public class DownloadFromInternet {
         bos.close();
         //System.out.println(builder.toString());
         int index = 0;
+
+        //let's use some util lib to find urls
+
         while ((index = builder.indexOf("http://", index)) != -1) {
             int index2 = builder.indexOf("\"", index);
             int index3 = builder.indexOf("\'", index);
@@ -58,6 +66,7 @@ public class DownloadFromInternet {
                 System.out.println("\n");
                 index = index2;
             } else
+            //are you saving {} braces? =)))
                 break;
         }
     }
