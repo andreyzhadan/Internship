@@ -15,5 +15,9 @@ public class Main {
         PrimitiveArray arr = new PrimitiveArray(array);
         System.out.println(arr);
 
+        String v1 = "xx";
+        String v2 = "xx";
+        System.out.println(v1 == v2);
+
     }
 }

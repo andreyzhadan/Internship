@@ -66,7 +66,6 @@ public class MainReflect {
                         method.invoke(obj, "Zhadan");
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -19,7 +19,6 @@ public class ReflectClass {
 
     @AnnotationGet
     public String getFirstName() {
-        System.out.println("Get firstName");
         return firstName;
     }
 
