@@ -28,7 +28,7 @@ public class Client {
 
             System.out.println("Client try to write " + i + " / " + j);
 
-            Child child = new Child(i, j);
+            Child child = new Child(i, j, new Integer(20));
             oos.writeObject(child);
             oos.flush();
             oos.close();
