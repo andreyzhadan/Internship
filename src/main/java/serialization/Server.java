@@ -1,5 +1,6 @@
 package serialization;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
@@ -11,19 +12,29 @@ import java.net.Socket;
 public class Server {
     public static void main(String[] args) throws Exception {
         int port = 6666;
-        ServerSocket serverSocket = new ServerSocket(port);
+        final ServerSocket serverSocket = new ServerSocket(port);
 
         System.out.println("Waiting for client...");
         while (true) {
-            Socket socket = serverSocket.accept();
-            System.out.println("Got a client :");
+            final Socket socket = serverSocket.accept();
+            new Thread(new Runnable() {
+                public void run() {
+                    System.out.println("Got a client :");
+                    InputStream sin = null;
+                    try {
+                        sin = socket.getInputStream();
+                        ObjectInputStream ois = new ObjectInputStream(sin);
+                        Child child = (Child) ois.readObject();
+                        System.out.println(child.getI() + " / " + child.getJ());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
 
-            InputStream sin = socket.getInputStream();
-
-            ObjectInputStream ois = new ObjectInputStream(sin);
-
-            Child child = (Child) ois.readObject();
-            System.out.println(child.getI() + " / " + child.getJ());
         }
     }
+
 }
