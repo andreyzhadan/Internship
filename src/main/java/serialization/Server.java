@@ -1,8 +1,6 @@
 package serialization;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -20,20 +18,44 @@ public class Server {
             new Thread(new Runnable() {
                 public void run() {
                     System.out.println("Got a client :");
-                    InputStream sin = null;
+                    InputStream sin;
+                    OutputStream sout;
                     try {
                         sin = socket.getInputStream();
                         ObjectInputStream ois = new ObjectInputStream(sin);
-                        Child child = (Child) ois.readObject();
-                        System.out.println(child.getI() + " / " + child.getJ());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
+
+                        //                        Child child = (Child) ois.readObject();
+//                        System.out.println(child.getI() + " / " + child.getJ() + " / " + child.getObj());
+
+                        Protocol protocol = (Protocol) ois.readObject();
+                        System.out.println("Client send me this " + protocol.getText() + " / " + protocol.getType().name());
+                        if (protocol.getType().equals(Protocol.Type.INFO)) {
+                            File file = new File("text.txt");
+                            if (!file.exists())
+                                file.createNewFile();
+                            FileWriter fileWritter = new FileWriter(file.getName(), true);
+                            fileWritter.write(protocol.getText());
+                            fileWritter.close();
+                        } else {
+                            System.out.println("Counting tf-idf is bullshit");
+                        }
+
+                        sout = socket.getOutputStream();
+                        ObjectOutputStream oos = new ObjectOutputStream(sout);
+
+                        Protocol back = new Protocol(Protocol.Type.INFO, "OK");
+
+                        System.out.println("Send response to client " + back.getText() + " / " + back.getType().name());
+                        oos.writeObject(back);
+                        oos.flush();
+                        ois.close();
+                        oos.close();
+
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }).start();
-
         }
     }
 
