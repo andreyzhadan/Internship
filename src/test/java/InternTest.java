@@ -1,11 +1,9 @@
-import org.junit.Test;
-
 /**
  * Created by azhadan on 7/10/13.
  */
 public class InternTest {
 
-    @Test
+    //@Test
     public void testEmpty() {
         System.out.println("@Test - testEmptyCollection");
     }

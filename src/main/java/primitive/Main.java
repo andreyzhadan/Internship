@@ -1,5 +1,7 @@
 package primitive;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
@@ -39,5 +41,14 @@ public class Main {
                 break;
             }
         }
+
+        Map<Integer, String> map2 = new HashMap<Integer, String>();
+        map2.put(5, "a");
+        map2.put(4, "b");
+        map2.put(3, "c");
+        map2.put(2, "d");
+        map2.put(1, "e");
+        System.out.println(map2);
+
     }
 }
