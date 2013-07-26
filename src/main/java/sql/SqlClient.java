@@ -38,7 +38,7 @@ public class SqlClient {
     }
 
     public static void makeSqlCall(ConnectionPool connectionPool) {
-        PoolableConnection poolableConnection = connectionPool.getConnection();
+        ConnectionWrapper poolableConnection = connectionPool.getConnection();
         Connection conn = poolableConnection.getConnection();
         Statement stmt = null;
         ResultSet rs = null;
@@ -56,7 +56,7 @@ public class SqlClient {
                 rs.close();
                 stmt.close();
             } catch (SQLException e) {
-                LOGGER.error("Cannot close RS");
+                LOGGER.error("Cannot close RS && STMT");
             }
             poolableConnection.close(connectionPool);
         }

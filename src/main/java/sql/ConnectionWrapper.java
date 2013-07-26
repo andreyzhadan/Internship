@@ -5,7 +5,7 @@ import java.sql.Connection;
 /**
  * Created by azhadan on 7/25/13.
  */
-public class PoolableConnection {
+public class ConnectionWrapper {
     private Connection connection;
 
     public Connection getConnection() {

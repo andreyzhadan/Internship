@@ -15,11 +15,11 @@ import java.util.Queue;
 public class ConnectionPool {
     private static final String url = "jdbc:mysql://localhost:3306/study";
     private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class.getName());
-    private Queue<PoolableConnection> poolableConnections;//non list
+    private Queue<ConnectionWrapper> poolableConnections;//non list
 
     public ConnectionPool() {
-        this.poolableConnections = new LinkedList<PoolableConnection>();
-        PoolableConnection poolableConnection = new PoolableConnection();
+        this.poolableConnections = new LinkedList<ConnectionWrapper>();
+        ConnectionWrapper poolableConnection = new ConnectionWrapper();
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, "root", "sadmin");
@@ -32,11 +32,11 @@ public class ConnectionPool {
         }
     }
 
-    public synchronized PoolableConnection getConnection() {
+    public synchronized ConnectionWrapper getConnection() {
         return !poolableConnections.isEmpty() ? poolableConnections.remove() : null; //CollectionUtils  apache
     }
 
-    public synchronized void putConnection(PoolableConnection connection) {
+    public synchronized void putConnection(ConnectionWrapper connection) {
         this.poolableConnections.add(connection);
     }
 }
