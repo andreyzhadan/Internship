@@ -3,6 +3,9 @@ package sql;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -80,21 +83,21 @@ public class SqlClient {
 
     public static void main(String[] args) throws InterruptedException {
         connectionPool = new ConnectionPool(5);
-//        ExecutorService service = Executors.newFixedThreadPool(3);
-//        for (int i = 0; i < 10; i++) {
-//            service.submit(new Runnable() {
-//                public void run() {
-//                    Random random = new Random();
-//                    int waitTime = random.nextInt(3000);
-//                    try {
-//                        Thread.currentThread().sleep(waitTime);
-//                        makeSqlCall();
-//                    } catch (InterruptedException e) {
-//                        LOGGER.error("Interrupted exception");
-//                    }
-//                }
-//            });
-//        }
+        ExecutorService service = Executors.newFixedThreadPool(3);
+        for (int i = 0; i < 10; i++) {
+            service.submit(new Runnable() {
+                public void run() {
+                    Random random = new Random();
+                    int waitTime = random.nextInt(3000);
+                    try {
+                        Thread.currentThread().sleep(waitTime);
+                        makeSqlCall();
+                    } catch (InterruptedException e) {
+                        LOGGER.error("Interrupted exception");
+                    }
+                }
+            });
+        }
         getMetaData();
     }
 

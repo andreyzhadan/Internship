@@ -18,7 +18,7 @@ public class ConnectionPool {
     private static BlockingQueue<PooledConnection> poolableConnections;//non list
 
     public ConnectionPool(int size) {
-        this.poolableConnections = new LinkedBlockingQueue<PooledConnection>();
+        poolableConnections = new LinkedBlockingQueue<PooledConnection>();
         for (int i = 0; i < size; i++) {
             try {
                 createNewConnection();
@@ -31,13 +31,12 @@ public class ConnectionPool {
     public synchronized PooledConnection getConnectionFromPool() throws SQLException {
         if (!poolableConnections.isEmpty()) {
             return poolableConnections.remove();
-        } else {
-            return createNewConnection();
         }
+        return createNewConnection();
     }
 
     public synchronized void returnConnectionToPool(PooledConnection connection) {
-        this.poolableConnections.add(connection);
+        poolableConnections.add(connection);
     }
 
     private PooledConnection createNewConnection() throws SQLException {
