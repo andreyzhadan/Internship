@@ -5,8 +5,8 @@ import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 /**
@@ -15,28 +15,35 @@ import java.util.Queue;
 public class ConnectionPool {
     private static final String url = "jdbc:mysql://localhost:3306/study";
     private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class.getName());
-    private Queue<ConnectionWrapper> poolableConnections;//non list
+    private static BlockingQueue<PooledConnection> poolableConnections;//non list
 
-    public ConnectionPool() {
-        this.poolableConnections = new LinkedList<ConnectionWrapper>();
-        ConnectionWrapper poolableConnection = new ConnectionWrapper();
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection(url, "root", "sadmin");
-            poolableConnection.setConnection(connection);
-            for (int i = 0; i < 5; i++) {
-                this.poolableConnections.add(poolableConnection);
+    public ConnectionPool(int size) {
+        this.poolableConnections = new LinkedBlockingQueue<PooledConnection>();
+        for (int i = 0; i < size; i++) {
+            try {
+                createNewConnection();
+            } catch (SQLException ex) {
+                LOGGER.error("Cannot open connection");
             }
-        } catch (SQLException e) {
-            LOGGER.error("Cannot open connection");//log4j
         }
     }
 
-    public synchronized ConnectionWrapper getConnection() {
-        return !poolableConnections.isEmpty() ? poolableConnections.remove() : null; //CollectionUtils  apache
+    public synchronized PooledConnection getConnectionFromPool() throws SQLException {
+        if (!poolableConnections.isEmpty()) {
+            return poolableConnections.remove();
+        } else {
+            return createNewConnection();
+        }
     }
 
-    public synchronized void putConnection(ConnectionWrapper connection) {
+    public synchronized void returnConnectionToPool(PooledConnection connection) {
         this.poolableConnections.add(connection);
+    }
+
+    private PooledConnection createNewConnection() throws SQLException {
+        Connection connection = DriverManager.getConnection(url, "root", "sadmin");
+        PooledConnection poolableConnection = new PooledConnection(this, connection);
+        poolableConnections.add(poolableConnection);
+        return poolableConnection;
     }
 }
