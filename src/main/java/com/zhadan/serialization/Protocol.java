@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by azhadan on 7/19/13.
  */
 public class Protocol implements Serializable {
+    private static final long serialVersionUID = -4061847940459415465L;
     private Type type;
     private String text;
 

@@ -19,7 +19,6 @@ public class Client implements Runnable {
         this.text = text;
     }
 
-    @Override
     public void run() {
         int serverPort = 6666;
         String address = "127.0.0.1";

@@ -17,7 +17,7 @@ public class MainReflect {
             Object obj = cls.newInstance();
 
             Method m = cls.getDeclaredMethod("setFirstName", String.class);
-            m.invoke(obj, new String("andrey"));
+            m.invoke(obj, "andrey");
 
             Field privateField = cls.getDeclaredField("lastName");
             privateField.setAccessible(true);

@@ -5,8 +5,8 @@ import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.LinkedList;
+import java.util.Queue;
 
 
 /**
@@ -15,10 +15,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ConnectionPool {
     private static final String url = "jdbc:mysql://localhost:3306/study";
     private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class.getName());
-    private static BlockingQueue<PooledConnection> poolableConnections;//non list
+    private static Queue<PooledConnection> poolableConnections;//non list
 
     public ConnectionPool(int size) {
-        poolableConnections = new LinkedBlockingQueue<PooledConnection>();
+        poolableConnections = new LinkedList<PooledConnection>();
         for (int i = 0; i < size; i++) {
             try {
                 createNewConnection();
@@ -46,9 +46,10 @@ public class ConnectionPool {
         return poolableConnection;
     }
 
-    public void closeAllConnections() throws SQLException {
+    public synchronized void closeAllConnections() throws SQLException {
         for (PooledConnection pooledConnection : poolableConnections) {
             pooledConnection.shutDown();
         }
+        poolableConnections.clear();
     }
 }
