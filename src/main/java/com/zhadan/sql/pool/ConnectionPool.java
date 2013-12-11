@@ -13,7 +13,7 @@ import java.util.Queue;
  * Created by azhadan on 7/25/13.
  */
 public class ConnectionPool {
-    private static final String url = "jdbc:mysql://localhost:3306/study";
+    private static final String url = "jdbc:mysql://localhost:3306/jkinopoisk";
     private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class.getName());
     private static Queue<PooledConnection> poolableConnections;//non list
 
