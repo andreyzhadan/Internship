@@ -1,4 +1,4 @@
-package com.zhadan.sql.junior.connectionFactory;
+package com.zhadan.junior.connectionFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;

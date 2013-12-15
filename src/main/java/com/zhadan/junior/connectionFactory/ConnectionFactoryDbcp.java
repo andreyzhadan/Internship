@@ -1,4 +1,4 @@
-package com.zhadan.sql.junior.connectionFactory;
+package com.zhadan.junior.connectionFactory;
 
 import org.apache.commons.dbcp.BasicDataSource;
 

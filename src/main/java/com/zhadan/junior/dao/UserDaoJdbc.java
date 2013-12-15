@@ -1,15 +1,18 @@
-package com.zhadan.sql.junior.dao;
+package com.zhadan.junior.dao;
 
-import com.zhadan.sql.junior.ConnectionFactoryFactory;
-import com.zhadan.sql.junior.bean.User;
-import com.zhadan.sql.junior.connectionFactory.ConnectionFactory;
+import com.zhadan.junior.ConnectionFactoryFactory;
+import com.zhadan.junior.bean.User;
+import com.zhadan.junior.connectionFactory.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by azhadan on 7/29/13.
+ * Created with IntelliJ IDEA.
+ * User: Andrew
+ * Date: 07.07.13
+ * Time: 18:56
  */
 public class UserDaoJdbc implements UserDao {
     private static final String INSERT_SQL = "INSERT into user values (default,?,?,?) ";

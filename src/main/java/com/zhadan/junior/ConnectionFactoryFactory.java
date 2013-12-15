@@ -1,8 +1,8 @@
-package com.zhadan.sql.junior;
+package com.zhadan.junior;
 
-import com.zhadan.sql.junior.connectionFactory.ConnectionFactory;
-import com.zhadan.sql.junior.connectionFactory.ConnectionFactoryDbcp;
-import com.zhadan.sql.junior.connectionFactory.ConnectionFactoryJbdc;
+import com.zhadan.junior.connectionFactory.ConnectionFactory;
+import com.zhadan.junior.connectionFactory.ConnectionFactoryDbcp;
+import com.zhadan.junior.connectionFactory.ConnectionFactoryJbdc;
 
 /**
  * Created by azhadan on 7/29/13.
